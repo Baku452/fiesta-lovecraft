@@ -110,6 +110,16 @@ const riteIcons = ['gift', 'clock', 'suggestion'];
           }
         </div>
       </section>
+
+      <section class="birthday" aria-labelledby="birthday-title">
+        <p class="kicker">El motivo del ritual</p>
+        <h2 id="birthday-title">Es mi cumpleaños.</h2>
+        <p>
+          Esta noche los antiguos signos se alinean para celebrar un año más de vida, misterio y
+          buena compañía.
+        </p>
+      </section>
+
       <section class="manifesto" aria-labelledby="manifesto-title" data-cursor-halo>
         <canvas class="fog-canvas" data-fog-canvas aria-hidden="true"></canvas>
         <span class="cursor-halo" aria-hidden="true"></span>
@@ -738,6 +748,7 @@ const riteIcons = ['gift', 'clock', 'suggestion'];
   }
 
   .details-band,
+  .birthday,
   .manifesto,
   .ritual-list,
   .summons {
@@ -977,6 +988,49 @@ const riteIcons = ['gift', 'clock', 'suggestion'];
     background:
       radial-gradient(circle at 75% 20%, rgba(143, 185, 150, 0.1), transparent 28rem),
       linear-gradient(180deg, #111d13 0%, #0d180f 58%, #111d13 100%);
+  }
+
+  .birthday {
+    position: relative;
+    background:
+      linear-gradient(90deg, rgba(143, 185, 150, 0.08), transparent 48%),
+      linear-gradient(180deg, #0d180f 0%, #111d13 100%);
+    border-top: 1px solid rgba(179, 203, 185, 0.12);
+    border-bottom: 1px solid rgba(179, 203, 185, 0.12);
+  }
+
+  .birthday::before {
+    content: '';
+    position: absolute;
+    inset: 1.2rem;
+    border: 1px solid rgba(143, 185, 150, 0.16);
+    pointer-events: none;
+  }
+
+  .birthday > * {
+    position: relative;
+    z-index: 1;
+    width: min(72rem, 100%);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .birthday h2 {
+    margin: 0;
+    max-width: 11ch;
+    color: var(--bone);
+    font-size: clamp(3rem, 9vw, 8rem);
+    line-height: 0.86;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+
+  .birthday p:not(.kicker) {
+    max-width: 42rem;
+    margin-top: 1.4rem;
+    color: var(--paper);
+    font-size: clamp(1.15rem, 2.2vw, 1.8rem);
+    line-height: 1.35;
   }
 
   .ritual-list h2,
@@ -1270,6 +1324,7 @@ const riteIcons = ['gift', 'clock', 'suggestion'];
     }
 
     .details-band,
+    .birthday,
     .manifesto,
     .ritual-list,
     .summons {
