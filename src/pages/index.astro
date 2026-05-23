@@ -16,6 +16,10 @@ const details = [
   ['Código', 'Negro ceremonial'],
 ];
 
+const calendarStartDate = '20260605T190000';
+const calendarEndDate = '20260606T000000';
+const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(invitation.title)}&dates=${calendarStartDate}/${calendarEndDate}&details=${encodeURIComponent(details)}&location=${encodeURIComponent(invitation.place)}`;
+
 const rites = [
   'Trae una ofrenda ',
   'La entrada se abre cuando el reloj marque las 7pm.',
@@ -55,6 +59,9 @@ const riteIcons = ['gift', 'clock', 'suggestion'];
 
           <div class="hero__actions" aria-label="Acciones de invitacion">
             <a class="button button--primary" href={invitation.contact}>Confirmar asistencia</a>
+            <a class="button button--ghost" href={googleCalendarUrl} target="_blank" rel="noreferrer">
+              Agregar al calendario
+            </a>
             <a class="button button--ghost" href="#detalles">Ver detalles</a>
           </div>
         </div>
