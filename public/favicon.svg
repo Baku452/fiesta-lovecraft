@@ -1,15 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Ritual sigil">
-	<rect width="64" height="64" rx="12" fill="#050706"/>
-	<circle cx="32" cy="29" r="19" fill="none" stroke="#43c7ab" stroke-width="3.25"/>
-	<path d="M32 9 49.3 39H14.7L32 9Z" fill="none" stroke="#bd9253" stroke-width="3" stroke-linejoin="round"/>
-	<circle cx="32" cy="29" r="6.5" fill="#e7dcc6"/>
-	<circle cx="32" cy="29" r="3.25" fill="#050706"/>
+	<rect width="64" height="64" rx="12" fill="#111d13"/>
+	<circle cx="32" cy="29" r="19" fill="none" stroke="#8fb996" stroke-width="3.25"/>
+	<path d="M32 9 49.3 39H14.7L32 9Z" fill="none" stroke="#709775" stroke-width="3" stroke-linejoin="round"/>
+	<circle cx="32" cy="29" r="6.5" fill="#b3cbb9"/>
+	<circle cx="32" cy="29" r="3.25" fill="#111d13"/>
 	<path
 		d="M25.5 44c-5.7 2.4-8.9 6.4-8.1 10.4M31.9 45.5c-2.1 4.8-2 8.9.4 12.2M38.4 44c5.7 2.4 8.9 6.4 8.1 10.4"
 		fill="none"
-		stroke="#43c7ab"
+		stroke="#8fb996"
 		stroke-width="3"
 		stroke-linecap="round"
 	/>
-	<path d="M19.5 21.5 44.5 36.5M44.5 21.5 19.5 36.5" stroke="#e7dcc6" stroke-width="2.25" stroke-linecap="round" opacity=".82"/>
+	<path d="M19.5 21.5 44.5 36.5M44.5 21.5 19.5 36.5" stroke="#b3cbb9" stroke-width="2.25" stroke-linecap="round" opacity=".82"/>
 </svg>
