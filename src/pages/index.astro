@@ -66,6 +66,7 @@ const riteIcons = ['gift', 'clock', 'suggestion'];
             rites.map((rite, index) => (
               <article class="rite">
                 <div class="rite__header">
+                  <span>{String(index + 1).padStart(2, '0')}</span>
                   {riteIcons[index] === 'gift' && (
                     <svg class="rite__icon" viewBox="0 0 24 24" aria-hidden="true">
                       <path d="M20 12v8.5H4V12" />
@@ -105,7 +106,7 @@ const riteIcons = ['gift', 'clock', 'suggestion'];
           <p class="kicker">La ceremonia</p>
           <h2 id="manifesto-title">Ven a celebrar entre velas, niebla y presagios.</h2>
         </div>
-        <p>
+        <p class="runic-text" data-runic-text tabindex="0">
           No sera una reunion cualquiera. Sera una fiesta de roles, un encuentro de almas bajo el
           manto de la noche, una experiencia para compartir historias, y misterios. Ven vestido para
           impresionar a los antiguos, con atuendos oscuros, accesorios enigmáticos o tu mejor
@@ -136,6 +137,86 @@ const riteIcons = ['gift', 'clock', 'suggestion'];
     </main>
   </body>
 </html>
+
+<script>
+  const runeAlphabet = 'ᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃᛇᛈᛉᛊᛏᛒᛖᛗᛚᛜᛞᛟ';
+  const runicTexts = document.querySelectorAll('[data-runic-text]');
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const isLetter = (char: string) => /[a-záéíóúñü]/i.test(char);
+  const randomRune = () => runeAlphabet[Math.floor(Math.random() * runeAlphabet.length)];
+
+  runicTexts.forEach((element) => {
+    if (!(element instanceof HTMLElement)) return;
+
+    const original = element.textContent ?? '';
+    const letters = original.split('');
+    const mutableIndexes = letters.map((char, index) => (isLetter(char) ? index : -1)).filter((index) => index >= 0);
+    let current = [...letters];
+    let stable = false;
+    let visible = false;
+    let lastTick = 0;
+
+    element.dataset.originalText = original;
+    element.setAttribute('aria-label', original);
+
+    const stabilize = () => {
+      stable = true;
+      element.classList.add('is-stable');
+    };
+
+    const unsettle = () => {
+      stable = false;
+      element.classList.remove('is-stable');
+    };
+
+    const step = (time: number) => {
+      if (!visible || prefersReducedMotion) {
+        element.textContent = original;
+        requestAnimationFrame(step);
+        return;
+      }
+
+      if (time - lastTick > 105) {
+        lastTick = time;
+
+        const edits = Math.max(3, Math.ceil(mutableIndexes.length * (stable ? 0.08 : 0.035)));
+        for (let i = 0; i < edits; i += 1) {
+          const index = mutableIndexes[Math.floor(Math.random() * mutableIndexes.length)];
+          current[index] = stable ? letters[index] : Math.random() > 0.45 ? randomRune() : letters[index];
+        }
+
+        if (stable) {
+          const hasRunes = current.some((char, index) => char !== letters[index]);
+          if (!hasRunes) current = [...letters];
+        }
+
+        element.textContent = current.join('');
+      }
+
+      requestAnimationFrame(step);
+    };
+
+    element.addEventListener('pointerenter', stabilize);
+    element.addEventListener('focus', stabilize);
+    element.addEventListener('pointerleave', unsettle);
+    element.addEventListener('blur', unsettle);
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        visible = entry.isIntersecting;
+        if (!visible) {
+          current = [...letters];
+          element.textContent = original;
+        }
+      },
+      { threshold: 0.25 },
+    );
+
+    observer.observe(element);
+    requestAnimationFrame(step);
+  });
+</script>
 
 <style>
   :root {
@@ -413,6 +494,29 @@ const riteIcons = ['gift', 'clock', 'suggestion'];
     color: var(--paper);
     font-size: clamp(1.1rem, 2vw, 1.5rem);
     line-height: 1.55;
+  }
+
+  .runic-text {
+    min-height: 1lh;
+    cursor: default;
+    text-shadow:
+      0 0 0.9rem rgba(143, 185, 150, 0.18),
+      0 0 2rem rgba(65, 93, 67, 0.16);
+    transition:
+      color 260ms ease,
+      text-shadow 260ms ease,
+      opacity 260ms ease;
+  }
+
+  .runic-text:hover,
+  .runic-text:focus,
+  .runic-text.is-stable {
+    color: var(--bone);
+    outline: none;
+    opacity: 1;
+    text-shadow:
+      0 0 0.35rem rgba(143, 185, 150, 0.22),
+      0 0 1.35rem rgba(112, 151, 117, 0.16);
   }
 
   .ritual-list {
