@@ -210,6 +210,7 @@ const riteIcons = ['gift', 'clock', 'suggestion'];
   const runeAlphabet = 'ᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃᛇᛈᛉᛊᛏᛒᛖᛗᛚᛜᛞᛟ';
   const runicTexts = document.querySelectorAll('[data-runic-text]');
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isTouchRunic = window.matchMedia('(hover: none), (pointer: coarse)').matches;
 
   const isLetter = (char: string) => /[a-záéíóúñü]/i.test(char);
   const randomRune = () => runeAlphabet[Math.floor(Math.random() * runeAlphabet.length)];
@@ -230,9 +231,18 @@ const riteIcons = ['gift', 'clock', 'suggestion'];
     let visible = false;
     let lastTick = 0;
     let stableStartedAt = 0;
+    let touchRevealTimer: ReturnType<typeof window.setTimeout> | undefined;
+    let touchUnsettleTimer: ReturnType<typeof window.setTimeout> | undefined;
 
     element.dataset.originalText = original;
     element.setAttribute('aria-label', original);
+
+    const seedRunes = (density = 0.36) => {
+      current = letters.map((char) =>
+        isLetter(char) && Math.random() < density ? randomRune() : char,
+      );
+      textTarget.textContent = current.join('');
+    };
 
     const stabilize = () => {
       stable = true;
@@ -255,7 +265,13 @@ const riteIcons = ['gift', 'clock', 'suggestion'];
       if (time - lastTick > 105) {
         lastTick = time;
 
-        const edits = Math.max(3, Math.ceil(mutableIndexes.length * (stable ? 0.08 : 0.035)));
+        const edits = Math.max(
+          isTouchRunic ? 2 : 3,
+          Math.ceil(
+            mutableIndexes.length *
+              (stable ? (isTouchRunic ? 0.14 : 0.08) : isTouchRunic ? 0.018 : 0.035),
+          ),
+        );
         if (stable) {
           const runeIndexes = mutableIndexes.filter((index) => current[index] !== letters[index]);
           const elapsed = time - stableStartedAt;
@@ -281,17 +297,42 @@ const riteIcons = ['gift', 'clock', 'suggestion'];
       requestAnimationFrame(step);
     };
 
-    element.addEventListener('pointerenter', stabilize);
+    if (isTouchRunic) {
+      element.classList.add('is-touch-runic');
+    }
+
+    element.addEventListener('pointerenter', () => {
+      if (!isTouchRunic) stabilize();
+    });
     element.addEventListener('focus', stabilize);
-    element.addEventListener('pointerleave', unsettle);
+    element.addEventListener('pointerleave', () => {
+      if (!isTouchRunic) unsettle();
+    });
     element.addEventListener('blur', unsettle);
+    element.addEventListener('pointerdown', () => {
+      if (!isTouchRunic) return;
+      window.clearTimeout(touchRevealTimer);
+      window.clearTimeout(touchUnsettleTimer);
+      unsettle();
+      seedRunes(0.32);
+      touchRevealTimer = window.setTimeout(stabilize, 180);
+      touchUnsettleTimer = window.setTimeout(unsettle, 7800);
+    });
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         visible = entry.isIntersecting;
         if (!visible) {
+          window.clearTimeout(touchRevealTimer);
+          window.clearTimeout(touchUnsettleTimer);
+          stable = false;
+          element.classList.remove('is-stable');
           current = [...letters];
           textTarget.textContent = original;
+        } else if (isTouchRunic) {
+          seedRunes(0.42);
+          touchRevealTimer = window.setTimeout(stabilize, 360);
+          touchUnsettleTimer = window.setTimeout(unsettle, 8600);
         }
       },
       { threshold: 0.25 },
@@ -304,7 +345,7 @@ const riteIcons = ['gift', 'clock', 'suggestion'];
   document.querySelectorAll('[data-cursor-halo]').forEach((section) => {
     if (!(section instanceof HTMLElement)) return;
 
-    section.addEventListener('pointermove', (event) => {
+    const moveHalo = (event: PointerEvent) => {
       const rect = section.getBoundingClientRect();
       const revealText = section.querySelector('[data-runic-text]');
       section.style.setProperty('--halo-x', `${event.clientX - rect.left}px`);
@@ -315,6 +356,15 @@ const riteIcons = ['gift', 'clock', 'suggestion'];
         revealText.style.setProperty('--halo-x', `${event.clientX - textRect.left}px`);
         revealText.style.setProperty('--halo-y', `${event.clientY - textRect.top}px`);
       }
+    };
+
+    section.addEventListener('pointermove', moveHalo);
+    section.addEventListener('pointerdown', (event) => {
+      moveHalo(event);
+      section.classList.add('has-halo');
+      if (isTouchRunic) {
+        window.setTimeout(() => section.classList.remove('has-halo'), 5200);
+      }
     });
 
     section.addEventListener('pointerenter', () => {
@@ -322,8 +372,19 @@ const riteIcons = ['gift', 'clock', 'suggestion'];
     });
 
     section.addEventListener('pointerleave', () => {
-      section.classList.remove('has-halo');
+      if (!isTouchRunic) section.classList.remove('has-halo');
     });
+
+    if (isTouchRunic) {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          section.classList.toggle('has-halo', entry.isIntersecting);
+        },
+        { threshold: 0.36 },
+      );
+
+      observer.observe(section);
+    }
   });
 
   document.querySelectorAll('[data-fog-canvas]').forEach((canvas) => {
@@ -840,6 +901,7 @@ const riteIcons = ['gift', 'clock', 'suggestion'];
   }
 
   .runic-text {
+    --rune-mask-size: 9.5rem;
     position: relative;
     display: block;
     cursor: default;
@@ -876,7 +938,7 @@ const riteIcons = ['gift', 'clock', 'suggestion'];
       0 0 1.4rem rgba(112, 151, 117, 0.2);
     opacity: 0;
     mask-image: radial-gradient(
-      circle 9.5rem at var(--halo-x, 50%) var(--halo-y, 50%),
+      circle var(--rune-mask-size) at var(--halo-x, 50%) var(--halo-y, 50%),
       #000 0%,
       transparent 72%
     );
@@ -895,6 +957,11 @@ const riteIcons = ['gift', 'clock', 'suggestion'];
     text-shadow:
       0 0 0.35rem rgba(143, 185, 150, 0.22),
       0 0 1.35rem rgba(112, 151, 117, 0.16);
+  }
+
+  .runic-text.is-touch-runic {
+    --rune-mask-size: min(72vw, 18rem);
+    touch-action: manipulation;
   }
 
   .ritual-list {
@@ -1143,6 +1210,32 @@ const riteIcons = ['gift', 'clock', 'suggestion'];
     .manifesto {
       min-height: auto;
       align-items: start;
+      height: auto;
+    }
+
+    .manifesto > p {
+      font-size: clamp(1rem, 4.4vw, 1.22rem);
+      line-height: 1.5;
+    }
+
+    .runic-text {
+      color: rgba(179, 203, 185, 0.24);
+      text-shadow: 0 0 1rem rgba(143, 185, 150, 0.1);
+    }
+
+    .runic-text__reveal {
+      opacity: 0.18;
+      transition: opacity 220ms ease;
+    }
+
+    .manifesto.has-halo .runic-text__reveal,
+    .runic-text.is-touch-runic.is-stable .runic-text__reveal {
+      opacity: 1;
+    }
+
+    .cursor-halo {
+      width: min(72vw, 18rem);
+      filter: blur(1rem);
     }
 
     .detail-card,
