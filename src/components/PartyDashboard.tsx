@@ -6,6 +6,7 @@ import RuleBook from "./RuleBook";
 import GameList from "./GameList";
 import MadnessCheckTimer from "./MadnessCheckTimer";
 import FinalRitual from "./FinalRitual";
+import { Copy } from "lucide-react";
 
 type Props = {
   party: Party;
@@ -39,6 +40,9 @@ type Props = {
 
 export default function PartyDashboard(props: Props) {
   const sortedPlayers = [...props.players].sort((a, b) => b.madness_points - a.madness_points);
+  const origin = typeof window === "undefined" ? "" : window.location.origin;
+  const playerUrl = `${origin}/game?party=${props.party.code}&player=1`;
+  const hostUrl = `${origin}/game?party=${props.party.code}&host=${props.party.host_token}`;
 
   return (
     <main className="mx-auto grid w-full max-w-5xl gap-4 px-4 py-5 md:grid-cols-[1fr_1fr]">
@@ -54,6 +58,19 @@ export default function PartyDashboard(props: Props) {
           </div>
         </div>
       </header>
+
+      {props.isHost && (
+        <section className="panel grid gap-3 md:col-span-2">
+          <div>
+            <p className="label">Compartir fiesta</p>
+            <h2 className="section-title">Links del culto</h2>
+          </div>
+          <div className="grid gap-2 md:grid-cols-2">
+            <CopyLink label="Participantes" value={playerUrl} />
+            <CopyLink label="Anfitrión" value={hostUrl} />
+          </div>
+        </section>
+      )}
 
       <section className="panel grid gap-3">
         <div className="flex items-center justify-between gap-3">
@@ -121,5 +138,21 @@ export default function PartyDashboard(props: Props) {
         />
       </div>
     </main>
+  );
+}
+
+function CopyLink({ label, value }: { label: string; value: string }) {
+  return (
+    <button
+      className="flex min-h-16 items-center justify-between gap-3 rounded-md border border-relic/20 bg-black/25 p-3 text-left text-sm text-bone/80"
+      onClick={() => navigator.clipboard.writeText(value)}
+      title={`Copiar link de ${label.toLowerCase()}`}
+    >
+      <span className="min-w-0">
+        <span className="label block">{label}</span>
+        <span className="block truncate">{value}</span>
+      </span>
+      <Copy className="shrink-0 text-relic" size={18} />
+    </button>
   );
 }
