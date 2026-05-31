@@ -48,7 +48,7 @@ export default function PartyDashboard(props: Props) {
     <main className="mx-auto grid w-full max-w-5xl gap-4 px-4 py-5 md:grid-cols-[1fr_1fr]">
       <header className="md:col-span-2">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <div>
+          <div className="min-w-0">
             <p className="label">Fiesta {props.party.code}</p>
             <h1 className="text-3xl font-black text-bone">Panel del culto</h1>
           </div>
@@ -74,7 +74,7 @@ export default function PartyDashboard(props: Props) {
 
       <section className="panel grid gap-3">
         <div className="flex items-center justify-between gap-3">
-          <div>
+          <div className="min-w-0">
             <p className="label">Jugadores</p>
             <h2 className="section-title">{props.players.length}/11 reunidos</h2>
           </div>

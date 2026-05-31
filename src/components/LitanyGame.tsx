@@ -21,7 +21,7 @@ export default function LitanyGame({ players, isHost, onResult }: Props) {
           <select className="input" value={playerId} onChange={(event) => setPlayerId(event.target.value)}>
             {players.map((player) => <option key={player.id} value={player.id}>{player.name}</option>)}
           </select>
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid gap-2 sm:grid-cols-3">
             <button className="btn btn-secondary" disabled={!playerId} onClick={() => onResult(playerId, -1, "Recitó bien")}>Bien</button>
             <button className="btn btn-secondary" disabled={!playerId} onClick={() => onResult(playerId, 1, "Falló Letanía")}>Falló</button>
             <button className="btn btn-secondary" disabled={!playerId} onClick={() => onResult(playerId, 1, "Rompió regla en Letanía")}>Rompió</button>

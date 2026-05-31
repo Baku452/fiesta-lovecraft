@@ -9,7 +9,7 @@ type Props = {
 
 export default function MadnessControls({ onAdd, onSubtract, onReset, onTribute }: Props) {
   return (
-    <div className="mt-3 grid grid-cols-4 gap-2">
+    <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
       <button className="btn min-h-10 px-2 text-xs" title="+1 Locura" onClick={onAdd}><Plus size={16} /> +1</button>
       <button className="btn btn-secondary min-h-10 px-2 text-xs" title="-1 Locura" onClick={onSubtract}><Minus size={16} /> -1</button>
       <button className="btn btn-secondary min-h-10 px-2 text-xs" title="Reset" onClick={onReset}><RotateCcw size={16} /> Reset</button>

@@ -25,7 +25,7 @@ export default function RuleBook({ rules, players, isHost, onCreate, onToggle, o
           event.currentTarget.reset();
         }}>
           <input className="input" name="text" placeholder="Nadie puede decir “yo”" required />
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid gap-2 sm:grid-cols-2">
             <select className="input" name="type" defaultValue="general">
               <option value="general">General</option>
               <option value="palabra_prohibida">Palabra prohibida</option>
@@ -46,7 +46,7 @@ export default function RuleBook({ rules, players, isHost, onCreate, onToggle, o
             <p className="font-bold">{rule.text}</p>
             <p className="mt-1 text-xs text-bone/55">{rule.type}{rule.target_player_id ? ` · ${players.find((p) => p.id === rule.target_player_id)?.name || "jugador"}` : ""}</p>
             {isHost && (
-              <div className="mt-3 grid grid-cols-3 gap-2">
+              <div className="mt-3 grid gap-2 sm:grid-cols-3">
                 <button className="btn btn-secondary min-h-10 px-2" onClick={() => onToggle(rule)}>{rule.is_active ? "Pausar" : "Activar"}</button>
                 <button className="btn btn-danger min-h-10 px-2" onClick={() => onDelete(rule)}>Eliminar</button>
                 <select className="input min-h-10" defaultValue="" onChange={(event) => event.target.value && onBreak(event.target.value, rule.text)}>
