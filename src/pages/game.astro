@@ -1,0 +1,25 @@
+---
+import '../styles.css';
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#050806" />
+    <title>Culto de Cthulhu | Juego</title>
+  </head>
+  <body>
+    <script is:inline>
+      window.addEventListener('error', (event) => {
+        document.body.dataset.gameError = `${event.message || 'error'} ${event.filename || ''}`;
+      });
+      window.addEventListener('unhandledrejection', (event) => {
+        document.body.dataset.gameError = event.reason?.message || String(event.reason || 'promise error');
+      });
+    </script>
+    <div id="game-root"></div>
+    <script type="module" src="/game-app.js"></script>
+  </body>
+</html>

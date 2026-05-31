@@ -1,43 +1,52 @@
-# Astro Starter Kit: Minimal
+# Fiesta Lovecraft
 
-```sh
-npm create astro@latest -- --template minimal
+Sitio Astro para la invitación de la fiesta y una web app de apoyo en `/game`.
+
+## Rutas
+
+- `/`: invitación actual de Astro.
+- `/game`: MVP React para gestionar la fiesta en vivo.
+- `/party/:code`: ruta lógica usada por la app para enlaces compartidos. En Astro se puede redirigir o abrir desde `/game` si se despliega con fallback; en local usa `/game` para crear y entrar.
+
+## Stack
+
+- Astro como host del sitio
+- React + TypeScript como island para la app de juego
+- Tailwind CSS
+- Supabase Database + Realtime
+- Sin backend propio
+- Sin login
+
+## Instalación
+
+```bash
+npm install
+cp .env.example .env
+npm run dev
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Configura `.env`:
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+```bash
+VITE_SUPABASE_URL=
+VITE_SUPABASE_ANON_KEY=
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Supabase
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+1. Crea un proyecto en Supabase.
+2. Abre el SQL editor.
+3. Ejecuta `src/supabase-schema.sql`.
+4. Activa Realtime para `parties`, `players`, `rules`, `prophecies`, `ritual_votes` y `game_logs`.
 
-Any static assets, like images, can be placed in the `public/` directory.
+Para MVP puedes dejar RLS desactivado o usar políticas permisivas. Esto es seguridad casual para una fiesta, no producción. El `host_token` no es seguridad fuerte.
 
-## 🧞 Commands
+## Uso de la App
 
-All commands are run from the root of the project, from a terminal:
+- Abre `/game`.
+- Crea una fiesta y comparte el código o link de jugadores.
+- Guarda el link de anfitrión con `?host=host_token`.
+- Jugadores entran, escriben su nombre y quedan sincronizados.
+- El anfitrión asigna roles, administra Locura, reglas, minijuegos, timer y Ritual Final.
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+El alcohol nunca es obligatorio. Todo brindis, brebaje o tributo debe tener alternativa sin alcohol o reto equivalente.
