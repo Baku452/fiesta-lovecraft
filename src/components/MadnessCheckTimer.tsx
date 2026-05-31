@@ -18,6 +18,10 @@ export default function MadnessCheckTimer({ party, players, isHost, onUpdateTime
     const max = Math.max(0, ...players.map((player) => player.madness_points));
     return players.filter((player) => player.madness_points === max);
   }, [players]);
+  const tributeIndex = useMemo(() => {
+    const seed = `${party.code}-${party.next_check_at || party.created_at}`.split("").reduce((sum, char) => sum + char.charCodeAt(0), 0);
+    return seed % tributeOptions.length;
+  }, [party.code, party.created_at, party.next_check_at]);
   const chosen = players.find((player) => player.role === "Elegido de Cthulhu");
 
   useEffect(() => {
@@ -35,8 +39,12 @@ export default function MadnessCheckTimer({ party, players, isHost, onUpdateTime
         <p className="label">Chequeo de Locura</p>
         <h2 className="section-title">{remaining === null ? "Timer pausado" : formatTime(remaining)}</h2>
       </div>
-      <p className="text-sm text-bone/65">Foco actual: {focusPlayers.map((player) => player.name).join(", ") || "sin jugadores"}</p>
-      <p className="rounded-md border border-relic/20 bg-black/25 p-3 text-sm text-bone/75">Tributo sugerido: {tributeOptions[Math.floor(now / 1000) % tributeOptions.length]} El alcohol siempre es opcional.</p>
+      <div className="rounded-md border border-relic/20 bg-black/25 p-3">
+        <p className="label">Mayor Locura</p>
+        <p className="mt-1 font-bold text-bone">{focusPlayers.map((player) => player.name).join(", ") || "Sin jugadores"}</p>
+        <p className="mt-1 text-xs text-bone/55">Cuando ocurre un Chequeo de Locura, esta persona queda bajo la atención del culto. Si hay empate, el anfitrión decide o el grupo vota.</p>
+      </div>
+      <p className="rounded-md border border-relic/20 bg-black/25 p-3 text-sm text-bone/75">Tributo sugerido: {tributeOptions[tributeIndex]} El alcohol siempre es opcional.</p>
       {isHost && (
         <div className="grid grid-cols-2 gap-2">
           <button className="btn btn-secondary" onClick={() => start(30)}>30 min</button>

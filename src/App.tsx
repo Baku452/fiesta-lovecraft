@@ -42,7 +42,7 @@ export default function App() {
 
   const queryParams = useMemo(() => new URLSearchParams(typeof location === "undefined" ? "" : location.search), []);
   const queryHostToken = queryParams.get("host");
-  const forcePlayerMode = queryParams.get("player") === "1";
+  const forcePlayerMode = queryParams.get("player") === "1" && !queryHostToken;
   const queryPartyCode = queryParams.get("party") || routeCode;
   const isHost = Boolean(
     party && !forcePlayerMode && (queryHostToken === party.host_token || getStored(keys.hostToken) === party.host_token),
@@ -123,7 +123,7 @@ export default function App() {
       localStorage.setItem(keys.hostToken, hostToken);
       localStorage.setItem(keys.partyCode, code);
       const playerUrl = `${location.origin}/game?party=${code}&player=1`;
-      const hostUrl = `${playerUrl}&host=${hostToken}`;
+      const hostUrl = `${location.origin}/game?party=${code}&host=${hostToken}`;
       setCreatedUrls({ code, playerUrl, hostUrl });
       setParty(result.data);
     } catch (caught) {

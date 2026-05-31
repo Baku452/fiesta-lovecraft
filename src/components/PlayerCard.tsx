@@ -23,6 +23,7 @@ export default function PlayerCard({ player, isHost, onMadness, onReset, onTribu
       <div className="mt-3 h-2 overflow-hidden rounded-full bg-white/10">
         <div className="h-full rounded-full bg-gradient-to-r from-plague to-relic" style={{ width: `${(player.madness_points / 5) * 100}%` }} />
       </div>
+      {isHost && <p className="mt-2 text-xs text-bone/50">Usa estos controles para sumar, curar o reiniciar la Locura de este jugador.</p>}
       {isHost && (
         <MadnessControls
           onAdd={() => onMadness(player, 1, "+1 Locura manual")}
