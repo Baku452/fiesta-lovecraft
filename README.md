@@ -5,7 +5,7 @@ Sitio Astro para la invitación de la fiesta y una web app de apoyo en `/game`.
 ## Rutas
 
 - `/`: invitación actual de Astro.
-- `/game`: MVP React para gestionar la fiesta en vivo.
+- `/game`: app React para gestionar la fiesta en vivo.
 - `/party/:code`: ruta lógica usada por la app para enlaces compartidos. En Astro se puede redirigir o abrir desde `/game` si se despliega con fallback; en local usa `/game` para crear y entrar.
 
 ## Stack
@@ -39,7 +39,7 @@ VITE_SUPABASE_ANON_KEY=
 3. Ejecuta `src/supabase-schema.sql`.
 4. Activa Realtime para `parties`, `players`, `rules`, `prophecies`, `ritual_votes` y `game_logs`.
 
-Para MVP puedes dejar RLS desactivado o usar políticas permisivas. Esto es seguridad casual para una fiesta, no producción. El `host_token` no es seguridad fuerte.
+Para uso casual de fiesta puedes dejar RLS desactivado o usar políticas permisivas. Esto no equivale a seguridad de producción. El `host_token` no es seguridad fuerte.
 
 ## Uso de la App
 

@@ -23734,7 +23734,7 @@ const sv = kr("Users", [
 function iv({ configured: n, onCreate: r, onJoin: s }) {
   return /* @__PURE__ */ w.jsxs("main", { className: "mx-auto flex min-h-screen w-full max-w-md flex-col justify-center gap-5 px-4 py-8", children: [
     /* @__PURE__ */ w.jsxs("div", { children: [
-      /* @__PURE__ */ w.jsx("p", { className: "label", children: "MVP realtime" }),
+      /* @__PURE__ */ w.jsx("p", { className: "label", children: "App realtime" }),
       /* @__PURE__ */ w.jsx("h1", { className: "mt-2 text-4xl font-black leading-tight text-bone", children: "Culto de Cthulhu" }),
       /* @__PURE__ */ w.jsx("p", { className: "mt-3 text-bone/70", children: "Una consola simple para dirigir la fiesta, asignar roles y mantener la Locura sincronizada." })
     ] }),

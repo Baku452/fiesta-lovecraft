@@ -10,7 +10,7 @@ export default function Home({ configured, onCreate, onJoin }: Props) {
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-md flex-col justify-center gap-5 px-4 py-8">
       <div>
-        <p className="label">MVP realtime</p>
+        <p className="label">App realtime</p>
         <h1 className="mt-2 text-4xl font-black leading-tight text-bone">Culto de Cthulhu</h1>
         <p className="mt-3 text-bone/70">Una consola simple para dirigir la fiesta, asignar roles y mantener la Locura sincronizada.</p>
       </div>
