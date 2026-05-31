@@ -24330,7 +24330,7 @@ function Sv(n) {
         /* @__PURE__ */ v.jsx("p", { className: "label", children: "Compartir fiesta" }),
         /* @__PURE__ */ v.jsx("h2", { className: "section-title", children: "Links del culto" })
       ] }),
-      /* @__PURE__ */ v.jsxs("div", { className: "grid gap-2 md:grid-cols-2", children: [
+      /* @__PURE__ */ v.jsxs("div", { className: "grid min-w-0 gap-2 md:grid-cols-2", children: [
         /* @__PURE__ */ v.jsx(dh, { label: "Participantes", value: o }),
         /* @__PURE__ */ v.jsx(dh, { label: "Anfitrión", value: l })
       ] })
@@ -24414,13 +24414,13 @@ function dh({ label: n, value: r }) {
   return /* @__PURE__ */ v.jsxs(
     "button",
     {
-      className: "flex min-h-16 items-center justify-between gap-3 rounded-md border border-relic/20 bg-black/25 p-3 text-left text-sm text-bone/80",
+      className: "flex min-w-0 items-center justify-between gap-3 rounded-md border border-relic/20 bg-black/25 p-3 text-left text-sm text-bone/80",
       onClick: () => navigator.clipboard.writeText(r),
       title: `Copiar link de ${n.toLowerCase()}`,
       children: [
-        /* @__PURE__ */ v.jsxs("span", { className: "min-w-0", children: [
+        /* @__PURE__ */ v.jsxs("span", { className: "min-w-0 flex-1 overflow-hidden", children: [
           /* @__PURE__ */ v.jsx("span", { className: "label block", children: n }),
-          /* @__PURE__ */ v.jsx("span", { className: "block truncate", children: r })
+          /* @__PURE__ */ v.jsx("span", { className: "block max-w-full overflow-hidden text-ellipsis whitespace-nowrap", children: r })
         ] }),
         /* @__PURE__ */ v.jsx(Dh, { className: "shrink-0 text-relic", size: 18 })
       ]

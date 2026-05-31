@@ -65,7 +65,7 @@ export default function PartyDashboard(props: Props) {
             <p className="label">Compartir fiesta</p>
             <h2 className="section-title">Links del culto</h2>
           </div>
-          <div className="grid gap-2 md:grid-cols-2">
+      <div className="grid min-w-0 gap-2 md:grid-cols-2">
             <CopyLink label="Participantes" value={playerUrl} />
             <CopyLink label="Anfitrión" value={hostUrl} />
           </div>
@@ -144,13 +144,13 @@ export default function PartyDashboard(props: Props) {
 function CopyLink({ label, value }: { label: string; value: string }) {
   return (
     <button
-      className="flex min-h-16 items-center justify-between gap-3 rounded-md border border-relic/20 bg-black/25 p-3 text-left text-sm text-bone/80"
+      className="flex min-w-0 items-center justify-between gap-3 rounded-md border border-relic/20 bg-black/25 p-3 text-left text-sm text-bone/80"
       onClick={() => navigator.clipboard.writeText(value)}
       title={`Copiar link de ${label.toLowerCase()}`}
     >
-      <span className="min-w-0">
+      <span className="min-w-0 flex-1 overflow-hidden">
         <span className="label block">{label}</span>
-        <span className="block truncate">{value}</span>
+        <span className="block max-w-full overflow-hidden text-ellipsis whitespace-nowrap">{value}</span>
       </span>
       <Copy className="shrink-0 text-relic" size={18} />
     </button>
