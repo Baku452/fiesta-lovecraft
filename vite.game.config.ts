@@ -23,7 +23,7 @@ export default defineConfig(({ mode }) => {
       outDir: "public",
       rollupOptions: {
         output: {
-          assetFileNames: "game-[name][extname]",
+          assetFileNames: "game-style[extname]",
         },
       },
     },
